@@ -34,7 +34,17 @@ class Modulo(maxAlumnos: Int) {
         }
     }
 
-    //fun listaNotas(evaluacion: String = "FINAL"): List<Pair<Float, Float>> {}
+    //Devuelve una lista de Pair con el formato de listOf(Pair(Alumno,Nota)). Si se introduce incorrectamente la evaluación, devuelve una lista vacía.
+    fun listaNotas(evaluacion: String = "FINAL"): List<Pair<Alumno, Float>> {
+        val eval = traducirEvaluacion(evaluacion)
+        var listaNotas: MutableList<Pair<Alumno, Float>> = mutableListOf()
+        if (eval >= EV_PRIMERA) {
+            for (i in 0..maxAlumnos) {
+                if (alumnos[i] != null) listaNotas.add(Pair(alumnos[i]!!, evaluaciones[eval][i]))
+            }
+        }
+        return listaNotas
+    }
 
     //Devuelve un Int con el número de aprobados. Si la evaluación se introduce de forma incorrecta devuelve un -1.
     fun numeroAprobados(evaluacion: String): Int {
@@ -66,31 +76,35 @@ class Modulo(maxAlumnos: Int) {
         val notaMedia = evaluaciones[eval].filter { it >= 0 }.average().toFloat()
         if (eval >= EV_PRIMERA) {
             return if (!notaMedia.isNaN()) notaMedia else -2.0F
-        }
-        else return -1.0F
+        } else return -1.0F
     }
 
     //Devuelve un Boolean si hay alumnos con diez o no. Si no se introduce correctamente la evaluación, devuelve false también.
     fun hayAlumnosConDiez(evaluacion: String): Boolean {
         val eval = traducirEvaluacion(evaluacion)
-        if(eval >= EV_PRIMERA) return evaluaciones[eval].any { it == 10.0F }
-        else return  false
+        if (eval >= EV_PRIMERA) return evaluaciones[eval].any { it == 10.0F }
+        else return false
     }
+
     //Devuelve un Boolean si hay alumnos aprobados o no. Si no se introduce correctamente la evaluación, devuelve false también.
     fun hayAlumnosAprobados(evaluacion: String): Boolean {
         val eval = traducirEvaluacion(evaluacion)
-        if(eval >= EV_PRIMERA) return evaluaciones[eval].any {it >= 5.0F}
+        if (eval >= EV_PRIMERA) return evaluaciones[eval].any { it >= 5.0F }
         else return false
     }
 
     //Devuelve un Float con la primera nota aprobada en el array empezando desde la posición 0. Si no se introduce correctamente la evaluación, devuelve -1.0.
     fun primeraNotaNoAprobada(evaluacion: String): Float {
         val eval = traducirEvaluacion(evaluacion)
-        if(eval >= EV_PRIMERA) return evaluaciones[eval][evaluaciones[eval].filter { it >= 0.0F }.indexOfFirst { it < 5.0F}]
+        if (eval >= EV_PRIMERA) return evaluaciones[eval][evaluaciones[eval].filter { it >= 0.0F }
+            .indexOfFirst { it < 5.0F }]
         else return -1.0F
     }
 
-    //fun listaNotasOrdenadas(evaluacion: String): List<Pair<Float, Float>> {}
+    fun listaNotasOrdenadas(evaluacion: String): List<Pair<Float, Float>> {
+        val eval = traducirEvaluacion(evaluacion)
+
+    }
 
     fun matricularAlumno(alumno: Alumno): Boolean {
         val posicionAlumnoVacio = alumnos.indexOfFirst { it == null }
