@@ -18,11 +18,9 @@ class Modulo(maxAlumnos: Int) {
 
     //Permite establecer la nota de cierto alumno y evaluación. Si se introduce correctamente los datos devuelve un true, si no, false. También devuelve false si el alumno no existe.
     fun establecerNota(idAlumno: String, evaluacion: String, nota: Float): Boolean {
-        require(checkEvaluacion(evaluacion))
-        require(nota in 0.0..10.0)
         val posicionAlumno = alumnos.indexOfFirst { it?.id == idAlumno }
-        if (posicionAlumno > -1 && checkEvaluacion(evaluacion) && nota in 0.0..10.0) {
-            evaluaciones[evaluacion.toInt()][posicionAlumno] = nota
+        if (posicionAlumno > -1 && checkEvaluacion(evaluacion)>-1 && nota in 0.0..10.0) {
+            evaluaciones[checkEvaluacion(evaluacion)][posicionAlumno] = nota
             return true
         } else return false
     }
@@ -35,38 +33,36 @@ class Modulo(maxAlumnos: Int) {
         }
     }
 
-    fun listaNotas(evaluacion: String): List<Pair<Float, Float>> {
-
-    }
+    //fun listaNotas(evaluacion: String): List<Pair<Float, Float>> {}
 
     //Devuelve un Int con el número de aprobados. Si la evaluación se introduce de forma incorrecta devuelve un -1.
     fun numeroAprobados(evaluacion: String): Int {
-        if (checkEvaluacion(evaluacion)) {
-            return evaluaciones[evaluacion.toInt()].count { it >= 5 }
+        if (checkEvaluacion(evaluacion)>=0) {
+            return evaluaciones[checkEvaluacion(evaluacion)].count { it >= 5 }
         } else return -1
     }
 
     //Devuelve un Float con la nota más baja de una evaluación. Si se introduce incorrectamente la evaluación, devuelve un -1.0. Si la evaluación está vacía, devuelve un -2.0.
     fun notaMasBaja(evaluacion: String): Float {
-        if (checkEvaluacion(evaluacion)) return evaluaciones[evaluacion.toInt()].minOrNull() ?: (-2.0F)
+        if (checkEvaluacion(evaluacion)>=0) return evaluaciones[checkEvaluacion(evaluacion)].minOrNull() ?: (-2.0F)
         else return -1.0F
     }
 
     //Devuelve un Float con la nota más alta de una evaluación. Si se introduce incorrectamente la evaluación, devuelve un -1.0. Si la evaluación está vacía, devuelve un -2.0.
     fun notaMasAlta(evaluacion: String): Float {
-        if(checkEvaluacion(evaluacion)) return evaluaciones[evaluacion.toInt()].maxOrNull()?:(-2.0F)
+        if(checkEvaluacion(evaluacion)>=0) return evaluaciones[checkEvaluacion(evaluacion)].maxOrNull()?:(-2.0F)
         else return -1.0F
     }
 
-    fun notaMedia(evaluacion: String): Float {}
+    //fun notaMedia(evaluacion: String): Float {}
 
-    fun hayAlumnosConDiez(evaluacion: String): Boolean {}
+    //fun hayAlumnosConDiez(evaluacion: String): Boolean {}
 
-    fun hayAlumnosAprobados(evaluacion: String): Boolean {}
+    //fun hayAlumnosAprobados(evaluacion: String): Boolean {}
 
-    fun primeraNotaNoAprobada(evaluacion: String): Float {}
+    //fun primeraNotaNoAprobada(evaluacion: String): Float {}
 
-    fun listaNotasOrdenadas(evaluacion: String): List<Pair<Float, Float>> {}
+    //fun listaNotasOrdenadas(evaluacion: String): List<Pair<Float, Float>> {}
 
     fun matricularAlumno(alumno: Alumno): Boolean {
         val posicionAlumnoVacio = alumnos.indexOfFirst { it == null }
@@ -90,12 +86,18 @@ class Modulo(maxAlumnos: Int) {
         } else return false
     }
 
-    //Comprueba que una evaluación introducida cumple con las restricciones.
-    private fun checkEvaluacion(evaluacion: String): Boolean {
-        try {
-            return evaluacion.toInt() in 0..3
-        } catch (_: Exception) {
-            return false
+    //Devuelve un Int traduciendo la evaluación introducida a la posición del array, sea por letra o por número. Si se introduce algo incorrecto, devuelve -1.
+    private fun checkEvaluacion(evaluacion: String): Int {
+        return when(evaluacion.uppercase()){
+            "1" -> 0
+            "PRIMERA" -> 0
+            "2" -> 1
+            "SEGUNDA" -> 1
+            "3" -> 2
+            "TERCERA" -> 2
+            "4" -> 3
+            "FINAL" -> 3
+            else -> -1
         }
     }
 }
@@ -113,5 +115,4 @@ data class Alumno(val id: String, val nombre: String, val ap1: String, val ap2: 
 
 fun main() {
     var a: Alumno = Alumno("agonpar518", "Alejandro", "González", "Parra")
-    println(a)
 }
