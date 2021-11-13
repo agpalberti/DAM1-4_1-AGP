@@ -177,23 +177,24 @@ data class Alumno(val id: String, val nombre: String, val ap1: String, val ap2: 
 
 }
 
-private fun stringRandom(): String {
-    var string = ""
-    val consonantes = listOf<Char>(
-        'q', 'w', 'r', 't', 'y', 'p', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'
-    )
-    val vocales = listOf<Char>('a', 'e', 'i', 'o', 'u')
-
-    string += consonantes.random().uppercase()
-    repeat(3) {
-        string += vocales.random()
-        string += consonantes.random()
-    }
-    string += vocales.random()
-    return string
-}
-
+//Devuelve un alumno con un id, nombre y apellidos aleatorios.
 fun alumnoRandom(): Alumno {
+    fun stringRandom(): String {
+        var string = ""
+        val consonantes = listOf<Char>(
+            'q', 'w', 'r', 't', 'y', 'p', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'
+        )
+        val vocales = listOf<Char>('a', 'e', 'i', 'o', 'u')
+
+        string += consonantes.random().uppercase()
+        repeat(3) {
+            string += vocales.random()
+            string += consonantes.random()
+        }
+        string += vocales.random()
+        return string
+    }
+
     val alumno: Alumno
     var id = ""
     val nombre = stringRandom()
