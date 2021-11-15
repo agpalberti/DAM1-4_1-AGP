@@ -108,7 +108,7 @@ class Modulo(maxAlumnos: Int) {
         else return -1.0F
     }
 
-    //Apartado 11
+    //Apartado 11. Devuelve una lista de Pair(Alumno,Nota) ordenadas de menor a mayor nota. Si se introduce mal la evaluación o si la evaluación está vacía, devuelve una lista vacía.
     fun listaNotasOrdenadas(evaluacion: String = "FINAL"): List<Pair<Alumno, Float>> {
         val eval = traducirEvaluacion(evaluacion)
         val listaNotas = mutableListOf<Pair<Alumno, Float>>()
